@@ -114,6 +114,14 @@ pe "kubectl --context=cluster1 get namespaces"
 pe "kubectl --context=cluster2 get namespaces"
 wait
 
+p "kubectl -n test-namespace edit federatednamespaceplacement test-namespace"
+wait
+kubectl -n test-namespace edit federatednamespaceplacement test-namespace
+
+pe "kubectl --context=cluster1 get namespaces"
+pe "kubectl --context=cluster2 get namespaces"
+wait
+
 # # show a prompt so as not to reveal our true nature after
 # # the demo has concluded
 p "${PURPLE}# Thanks for watching the demo!"
