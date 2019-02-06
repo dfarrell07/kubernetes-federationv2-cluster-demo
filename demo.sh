@@ -26,3 +26,22 @@ DEMO_PROMPT="${GREEN}➜ ${CYAN}\W ${RED}$(kubectl config current-context) ${WHI
 
 # hide the evidence
 clear
+
+p "# Preparing demo..."
+
+# starting from scratch
+for vm in cluster1 cluster2; do
+    if [[ -d ~/.minikube/machines/${vm} ]]; then
+        p "# Existing ${vm}, deleting..."
+        pe "minikube delete -p ${vm}"
+    fi
+
+    p "# Creating ${vm}..."
+    p "minikube start -p ${vm}"
+    minikube start -p ${vm}|tee ${vm}_creation.log
+
+done
+
+p "# Done preparing demo, press <enter> to continue..."
+
+wait
