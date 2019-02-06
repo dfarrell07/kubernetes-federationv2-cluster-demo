@@ -46,16 +46,16 @@ if $DO_SETUP; then
         unset TYPE_SPEED
     fi
 
-    p "# Preparing demo..."
+    p "${PURPLE}# Preparing demo..."
 
     # starting from scratch
     for vm in cluster1 cluster2; do
         if [[ -d ~/.minikube/machines/${vm} ]]; then
-            p "# Existing ${vm}, deleting..."
+            p "${PURPLE}# Existing ${vm}, deleting..."
             pe "minikube delete -p ${vm}"
         fi
 
-        p "# Creating ${vm}..."
+        p "${PURPLE}# Creating ${vm}..."
         p "minikube start -p ${vm}"
         minikube start -p ${vm}|tee ${vm}_creation.log
 
@@ -65,14 +65,14 @@ if $DO_SETUP; then
         TYPE_SPEED=$SAVED_TYPE_SPEED
     fi
 
-    p "# Done preparing demo, press <enter> to continue..."
+    p "${PURPLE}# Done preparing demo, press <enter> to continue..."
     wait
 fi
 
 clear
 
 
-p "# Welcome to the federation demo"
+p "${PURPLE}# Welcome to the federation demo"
 wait
 
 # Save script root directory
@@ -116,7 +116,7 @@ wait
 
 # # show a prompt so as not to reveal our true nature after
 # # the demo has concluded
-p "# Thanks for watching the demo!"
+p "${PURPLE}# Thanks for watching the demo!"
 wait
 
 # Return to script root directory
