@@ -54,3 +54,30 @@ wait
 if [[ ! -z $SAVED_TYPE_SPEED ]]; then
     TYPE_SPEED=$SAVED_TYPE_SPEED
 fi
+
+clear
+
+
+p "# Welcome to the federated demo"
+wait
+
+for vm in cluster1 cluster2; do
+    p "minikube start -p ${vm}"
+    cat ${vm}_creation.log
+    wait
+done
+
+ln -s $GOPATH/src/github.com/kubernetes-sigs/federation-v2/ src
+
+pe "kubectl config use-context cluster1"
+wait
+
+pe "cd src"
+
+pe "./scripts/deploy-federation-latest.sh cluster2"
+wait
+
+# # show a prompt so as not to reveal our true nature after
+# # the demo has concluded
+p "# Thanks for watching the demo!"
+wait
