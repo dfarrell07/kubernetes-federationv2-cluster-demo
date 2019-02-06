@@ -86,7 +86,9 @@ if $DO_SETUP; then
     done
 fi
 
-ln -s $GOPATH/src/github.com/kubernetes-sigs/federation-v2/ src
+if [ ! -d src ]; then
+    ln -s $GOPATH/src/github.com/kubernetes-sigs/federation-v2/ src
+fi
 
 pe "kubectl config use-context cluster1"
 wait
