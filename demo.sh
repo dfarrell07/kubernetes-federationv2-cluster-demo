@@ -61,6 +61,9 @@ clear
 p "# Welcome to the federated demo"
 wait
 
+# Save script root directory
+SCRIPT_DIR=$(pwd)
+
 for vm in cluster1 cluster2; do
     p "minikube start -p ${vm}"
     cat ${vm}_creation.log
@@ -81,3 +84,6 @@ wait
 # # the demo has concluded
 p "# Thanks for watching the demo!"
 wait
+
+# Return to script root directory
+cd $SCRIPT_DIR
