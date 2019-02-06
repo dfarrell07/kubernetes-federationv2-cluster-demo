@@ -100,7 +100,9 @@ if $DO_SETUP; then
     wait
 fi
 
-pe "kubectl -n federation-system describe federatedclusters"
+p "kubectl -n federation-system describe federatedclusters"
+wait
+kubectl -n federation-system describe federatedclusters
 wait
 
 pe "cat example/sample1/federatednamespace-template.yaml"
