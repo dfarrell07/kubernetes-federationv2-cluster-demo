@@ -124,6 +124,37 @@ pe "kubectl --context=cluster1 get namespaces"
 pe "kubectl --context=cluster2 get namespaces"
 wait
 
+pe "kubectl apply -f example/sample1/federatednamespace-placement.yaml"
+wait
+
+pe "kubefed2 federate enable ClusterRoleBinding"
+wait
+
+pe "ls -l example/sample1"
+wait
+
+pe "cat example/sample1/federateddeployment-template.yaml"
+pe "cat example/sample1/federateddeployment-placement.yaml"
+pe "cat example/sample1/federateddeployment-override.yaml"
+wait
+
+pe "cat example/sample1/federatedservice-template.yaml"
+wait
+
+p "${PURPLE}# Let's make some magic!"
+wait
+
+pe "kubectl apply -R -f example/sample1"
+wait
+
+pe "kubectl --context=cluster1 -n test-namespace get --watch pods"
+pe "kubectl --context=cluster2 -n test-namespace get --watch pods"
+wait
+
+pe "kubectl --context=cluster1 -n test-namespace get svc"
+pe "kubectl --context=cluster2 -n test-namespace get svc"
+wait
+
 # # show a prompt so as not to reveal our true nature after
 # # the demo has concluded
 p "${PURPLE}# Thanks for watching the demo!"
