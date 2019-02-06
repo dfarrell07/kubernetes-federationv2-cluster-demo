@@ -100,6 +100,20 @@ if $DO_SETUP; then
     wait
 fi
 
+pe "kubectl -n federation-system describe federatedclusters"
+wait
+
+pe "cat example/sample1/federatednamespace-template.yaml"
+pe "cat example/sample1/federatednamespace-placement.yaml"
+wait
+
+pe "kubectl apply -f example/sample1/federatednamespace-template.yaml -f example/sample1/federatednamespace-placement.yaml"
+wait
+
+pe "kubectl --context=cluster1 get namespaces"
+pe "kubectl --context=cluster2 get namespaces"
+wait
+
 # # show a prompt so as not to reveal our true nature after
 # # the demo has concluded
 p "# Thanks for watching the demo!"
