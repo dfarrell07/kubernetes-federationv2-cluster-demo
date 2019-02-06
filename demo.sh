@@ -27,6 +27,11 @@ DEMO_PROMPT="${GREEN}➜ ${CYAN}\W ${RED}$(kubectl config current-context) ${WHI
 # hide the evidence
 clear
 
+if [[ ! -z $TYPE_SPEED ]]; then
+    SAVED_TYPE_SPEED=$TYPE_SPEED
+    unset TYPE_SPEED
+fi
+
 p "# Preparing demo..."
 
 # starting from scratch
@@ -45,3 +50,7 @@ done
 p "# Done preparing demo, press <enter> to continue..."
 
 wait
+
+if [[ ! -z $SAVED_TYPE_SPEED ]]; then
+    TYPE_SPEED=$SAVED_TYPE_SPEED
+fi
