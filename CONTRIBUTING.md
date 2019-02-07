@@ -70,21 +70,14 @@ changes:
 
 Below is a list of possible types:
 
-+----------+-------------------------------------------------------+
 | Type     | Description                                           |
-+==========+=======================================================+
+|----------|-------------------------------------------------------|
 | feat     | Adds a new feature                                    |
-+----------+-------------------------------------------------------+
 | fix      | Fixes a confirmed bug or other unexpected behavior    |
-+----------+-------------------------------------------------------+
 | docs     | Documentation update                                  |
-+----------+-------------------------------------------------------+
 | style    | Reformats existing code to conform to the style guide |
-+----------+-------------------------------------------------------+
 | refactor | Refactors existing code to improve readability        |
-+----------+-------------------------------------------------------+
 | test     | Adds additional tests                                 |
-+----------+-------------------------------------------------------+
 
 Since each commit is represented as a "change" in GerritHub, multiple commits
 should be squashed into one commit before pushing to GerritHub for review. To
