@@ -11,7 +11,7 @@ TYPE_SPEED=20
 ########################
 # include the magic
 ########################
-. ../demo-magic.sh -n
+. ./demo-magic/demo-magic.sh -n
 
 
 ###################################
