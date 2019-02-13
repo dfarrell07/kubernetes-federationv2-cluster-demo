@@ -2,7 +2,27 @@
 
 A demo based on the [Federation v2 examples](https://github.com/kubernetes-sigs/federation-v2/tree/master/example) as a starting point, and following [the Federation v2 user guide](https://github.com/kubernetes-sigs/federation-v2/blob/master/docs/userguide.md).
 
-# Preparation
+# Automated Preparation
+
+Ansible logic for fully configuring the demo environment on RDO Cloud is
+provided by the `deploy_fed.yml` playbook.
+
+Follow [these
+docs](https://docs.google.com/document/d/1ngJLTWKOCttSVbyv9MPPYL-mevxutYasgIoLTfy03hg)
+to get an RDO Cloud account, do one-time account setup and launch an instance.
+
+Make sure you have `ansible` and `ansible-playbook` installed on your local
+machine.
+
+Configure your Ansible hosts inventory with the IP of your instance on RDO
+Cloud using the name fedv2demo.
+
+Configure your RDO Cloud instance for the demo with `ansible-playbook
+deploy_fed.yml`.
+
+Once the Ansible playbook finishes, you should be ready to run `demo.sh`.
+
+# Manual Preparation
 
 Your local machine will have to be prepared to be able to use this demo in a successful manner.
 

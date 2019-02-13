@@ -1,0 +1,94 @@
+---
+- hosts: fedv2demo
+  remote_user: centos
+
+  tasks:
+  - name: Update all packages
+    yum:
+      name: '*'
+      state: latest
+    become: yes
+
+  - name: Install Go
+    unarchive:
+      src: https://dl.google.com/go/go1.11.5.linux-amd64.tar.gz
+      remote_src: yes
+      dest: /usr/local/
+    become: yes
+
+  - name: Add Go to path
+    lineinfile:
+      path: ~/.bash_profile
+      line: 'export PATH=$PATH:/usr/local/go/bin'
+
+  - name: Symlink Go to /usr/bin for SSH shells
+    file:
+      src: /usr/local/go/bin/go
+      dest: /usr/bin/go
+      state: link
+    become: yes
+
+  - name: Install Git
+    yum:
+      name: git
+    become: yes
+
+  - name: Install GCC
+    yum:
+      name: gcc
+    become: yes
+
+  - name: Download Fedv2 source
+    shell: 'go get -u github.com/kubernetes-sigs/federation-v2/cmd/kubefed2'
+
+  - name: Install Federation v2 dependency binaries
+    shell: 'cd /home/centos/go/src/github.com/kubernetes-sigs/federation-v2/ && ./scripts/download-binaries.sh'
+
+  - name: Install Go dependency management tool Dep
+    shell: 'curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh'
+
+  - name: Add Dep to path
+    lineinfile:
+      path: ~/.bash_profile
+      line: 'export PATH=$PATH:/home/centos/go/bin'
+
+  - name: Symlink Dep to /usr/bin for SSH shells
+    file:
+      src: /home/centos/go/bin/dep
+      dest: /usr/bin/dep
+      state: link
+    become: yes
+
+  - name: Apply patch to fix Fedv2 build
+    blockinfile:
+      path: /home/centos/go/src/github.com/kubernetes-sigs/federation-v2/Gopkg.toml
+      block: |
+        [[override]]
+        name = "github.com/Azure/go-autorest"
+        revision = "bca49d5b51a50dc5bb17bbf6204c711c6dbded06"
+
+  - name: Prepare Fedv2 build using Dep
+    shell: 'cd /home/centos/go/src/github.com/kubernetes-sigs/federation-v2/ && dep ensure -v'
+
+  - name: Build Fedv2
+    shell: 'cd /home/centos/go/src/github.com/kubernetes-sigs/federation-v2/ && go build -o bin/kubefed2 cmd/kubefed2/kubefed2.go'
+
+  - name: Add VirtualBox RPM repo
+    yum_repository:
+      name: 'virtualbox'
+      description: 'Oracle Linux / RHEL / CentOS-$releasever / $basearch - VirtualBox'
+      baseurl: 'http://download.virtualbox.org/virtualbox/rpm/el/$releasever/$basearch'
+      gpgcheck: no
+    become: yes
+
+  - name: Install VirtualBox
+    yum:
+      name: VirtualBox-6.0
+    become: yes
+
+  - name: Install Minikube
+    shell: 'curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 && chmod +x minikube && cp minikube /usr/local/bin && rm minikube'
+    become: yes
+
+  - name: Download demo source
+    shell: 'git clone https://github.com/mpeterson/kubernetes-federationv2-cluster-demo.git'
